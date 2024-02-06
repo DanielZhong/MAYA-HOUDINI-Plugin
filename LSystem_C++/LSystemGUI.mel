@@ -1,0 +1,117 @@
+global proc createLSystemGUI() {
+    if (`window -exists LSystemWindow`) {
+        deleteUI -window LSystemWindow;
+    }
+
+    window LSystemWindow;
+    columnLayout -adjustableColumn true;
+
+    // Top part: Label and Browse button.
+    rowLayout -numberOfColumns 2 -columnWidth2 400 100 -columnAlign2 "right" "left";
+    text -label "Browse for Grammar Files";
+    button -label "Browse..." -command "openGrammarFile";
+    setParent ..;
+
+    // Middle part: Scroll field and LSystem parameters within a frame.
+    scrollField -wordWrap true -text "" grammarScrollField;
+    frameLayout -collapsable true -label "LSystem Parameters";
+    columnLayout;
+    floatSliderGrp -label "Iterations" -field true -minValue 1 -maxValue 10 -fieldMinValue 1 -fieldMaxValue 100 -value 5 iterationsSlider;
+    floatSliderGrp -label "Default Step Size" -field true -minValue 0.1 -maxValue 10 -value 1 stepSizeSlider;
+    floatSliderGrp -label "Default Angle" -field true -minValue 0 -maxValue 360 -value 90 angleSlider;
+    setParent ..;
+    setParent ..;
+
+    // Bottom part: Cancel and Create buttons.
+    rowLayout -numberOfColumns 2 -columnWidth2 400 100 -columnAlign2 "right" "left";
+    button -label "Cancel" -command "cancelLSystemCmd";
+    button -label "Create" -command "invokeLSystemCmd";
+    setParent ..; // Go back up to the columnLayout
+
+    
+    showWindow LSystemWindow;
+}
+
+global proc openGrammarFile() {
+    string $fileFilter = "Text Files (*.txt)";
+    string $result[] = `fileDialog2 -fileMode 1 -caption "Open Grammar File" -fileFilter $fileFilter`;
+
+    if (size($result) > 0) {
+        string $filePath = $result[0];
+        
+        int $fileId = `fopen $filePath "r"`;
+        if ($fileId == -1) {
+            print("Error: Unable to open file.\n");
+            return;
+        }
+
+        string $fileContent = "";
+        string $line = `fgetline $fileId`;
+        while (size($line) > 0) {
+            $fileContent += $line;
+            $line = `fgetline $fileId`;
+        }
+        fclose $fileId;
+
+        scrollField -edit -text $fileContent grammarScrollField;
+    }
+}
+
+global proc invokeLSystemCmd() {
+    float $iterations = `floatSliderGrp -query -value iterationsSlider`;
+    float $stepSize = `floatSliderGrp -query -value stepSizeSlider`;
+    float $angle = `floatSliderGrp -query -value angleSlider`;
+    string $grammar = `scrollField -query -text grammarScrollField`;
+
+    // Replace \n to random symbol in order to adapt LSystem class
+    $grammar = `substituteAllString $grammar "\n" "\\n"`;
+
+    string $cmd = ("LSystemCmd -i " + $iterations + " -ss " + $stepSize + " -a " + $angle + " -g \"" + $grammar + "\"");
+
+    print("Executing command: " + $cmd + "\n");
+    
+    //pass inito cmd
+    eval($cmd);
+    
+    if (`window -exists LSystemWindow`) {
+        deleteUI -window LSystemWindow;
+    }
+}
+
+global proc cancelLSystemCmd() {
+    if (`window -exists LSystemWindow`) {
+        deleteUI -window LSystemWindow;
+    }
+}
+
+global proc createLSystemNode() {
+    string $transformNode = `createNode transform -n "LSystem1"`;
+
+    string $meshNode = `createNode mesh -n "LSystemShape1" -p $transformNode`;
+
+    sets -add initialShadingGroup $meshNode;
+
+    string $lsystemNode = `createNode LSystemNode -n "LSystemNode1"`;
+
+    connectAttr time1.outTime ($lsystemNode + ".time");
+
+    connectAttr ($lsystemNode + ".outputMesh") ($meshNode + ".inMesh");
+}
+
+global proc createLSystemMenu() {
+    global string $customMenu;
+    if (`menu -exists $customMenu`)
+        deleteUI $customMenu;
+
+    global string $gMainWindow;
+    string $menuLabel = "L System Menu";
+    $customMenu = `menu -parent $gMainWindow -label $menuLabel -tearOff true`;
+
+    menuItem -label "Create LSystem" -command "createLSystemGUI" -parent $customMenu;
+    menuItem -label "Create Dynamic LSystem" -command "createLSystemNode" -parent $customMenu;
+}
+
+createLSystemMenu();
+
+
+

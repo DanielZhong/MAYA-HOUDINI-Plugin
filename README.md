@@ -7,9 +7,9 @@
   * Core(TM) i7-12700K 3.61 GHz 32.0 GB, NVIDIA GeForce RTX 3070 Ti (personal computer)   
     * Maya 2022
 
-|<img src="LSystemResult2.jpg" width="100%">|<img src="LSystemResult.png" width="100%">|
-|:-:|:-:|
-|Result|Result|
+|<img src="LSystemResult2.jpg" width="100%">|<img src="LSystemResult.png" width="100%">|<img src="LSystemInstance (2).jpg" width="100%">|<img src="LSystemInstance (3).jpg" width="100%">|
+|:-:|:-:|:-:|:-:|
+|C++ Result|C++ Result|Python Result|Python Result|
 
 ## Introduction
 This project encompasses the development of a Maya plugin designed to integrate L-Systems, a mathematical modeling language used to simulate the growth processes of plant development and other naturally occurring phenomena. The plugin is developed using a combination of C++ for the backend functionality and Maya Embedded Language (MEL) for the user interface and integration within Maya's ecosystem.
@@ -22,6 +22,7 @@ The core objective of this plugin is to provide Maya users with tools to generat
 |Menu|GUI|Node Interface|
 
 ## Loading Plugin in Maya
+![](LSystemInstance.gif)
 ![](LSystemCMD.gif)
 ![](LSystemNode.gif)
 

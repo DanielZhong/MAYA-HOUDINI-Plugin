@@ -1,0 +1,2 @@
+^E:\UPENN\CIS660\HW3_BASECODE_VS2022\LSYSTEM.I
+swigwin-4.0.1\swig.exe -c++ -python -outdir E:\Upenn\cis660\HW3_basecode_VS2022\\bin\ LSystem.i

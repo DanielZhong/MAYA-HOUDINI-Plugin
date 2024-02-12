@@ -1,0 +1,66 @@
+global proc createRandomNodeNetwork() {
+    polySphere;
+    instancer;
+    createNode randomNode;
+    connectAttr pSphere1.matrix instancer1.inputHierarchy[0];
+    connectAttr randomNode1.outPoints instancer1.inputPoints;
+}
+
+global proc createRandomNodeNetworkWithSelected() {
+    string $selection[] = `ls -sl`;
+    if (size($selection) == 1) {
+        instancer;
+        createNode randomNode;
+        connectAttr ($selection[0] + ".matrix") instancer1.inputHierarchy[0];
+        connectAttr randomNode1.outPoints instancer1.inputPoints;
+    } else {
+        warning "Please select a single object.";
+    }
+}
+
+global proc createLSystemInstanceNetwork() {
+    polyCube;
+    instancer;
+    createNode LSystemInstanceNode;
+    connectAttr pCube1.matrix instancer1.inputHierarchy[0];
+    connectAttr LSystemInstanceNode1.outBranch instancer1.inputPoints;
+    
+    polySphere;
+    instancer;
+    createNode LSystemInstanceNode;
+    connectAttr pSphere1.matrix instancer2.inputHierarchy[0];
+    connectAttr LSystemInstanceNode1.outFlower instancer2.inputPoints;
+}
+
+global proc createLSystemInstanceNetworkWithSelected() {
+    string $selection[] = `ls -sl`;
+    if (size($selection) == 2) {
+        instancer;
+        createNode LSystemInstanceNode;
+        connectAttr ($selection[0] + ".matrix") instancer1.inputHierarchy[0];
+        connectAttr LSystemInstanceNode1.outBranch instancer1.inputPoints;
+        
+        instancer;
+        connectAttr ($selection[1] + ".matrix") instancer2.inputHierarchy[0];
+        connectAttr LSystemInstanceNode1.outFlower instancer2.inputPoints;
+    } else {
+        warning "Please select exactly two objects.";
+    }
+}
+
+global proc createLSystemInstanceMenu() {
+    global string $gMainWindow;
+
+    if (`menu -exists LSystemInstanceMenu`) {
+        deleteUI -menu LSystemInstanceMenu;
+    }
+
+    string $menu = `menu -parent $gMainWindow -label "LSystemInstance" LSystemInstanceMenu`;
+
+    menuItem -label "Create randomNode Network" -command "createRandomNodeNetwork" -parent $menu;
+    menuItem -label "Create randomNode Network with Selected" -command "createRandomNodeNetworkWithSelected" -parent $menu;
+    menuItem -label "Create LSystemInstanceNode Network" -command "createLSystemInstanceNetwork" -parent $menu;
+    menuItem -label "Create LSystemInstanceNode Network with Selected" -command "createLSystemInstanceNetworkWithSelected" -parent $menu;
+}
+
+createLSystemInstanceMenu();

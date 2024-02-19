@@ -1,15 +1,15 @@
-# MAYA C++ & Mel Plugin - L System
+# MAYA & Houdini Plugin - L System (C++, Python, Mel scripts)
 
 * Ruijun(Daniel) Zhong
     * [LinkedIn](https://www.linkedin.com/in/daniel-z-73158b152/)    
     * [Personal Website](https://www.danielzhongportfolio.com/)
 * Tested on: 
   * Core(TM) i7-12700K 3.61 GHz 32.0 GB, NVIDIA GeForce RTX 3070 Ti (personal computer)   
-    * Maya 2022
+    * Maya 2022, Houdini 20.0.590, Visua Studio 2022
 
-|<img src="LSystemResult2.jpg" width="100%">|<img src="LSystemResult.png" width="100%">|<img src="LSystemInstance (2).jpg" width="100%">|<img src="LSystemInstance (3).jpg" width="100%">|
-|:-:|:-:|:-:|:-:|
-|C++ Result|C++ Result|Python Result|Python Result|
+|<img src="LSystemResult2.jpg" width="100%">|<img src="LSystemResult.png" width="100%">|<img src="LSystemInstance (2).jpg" width="100%">|<img src="LSystemInstance (3).jpg" width="100%">|<img src="LSystemHoudini.jpg" width="100%">|
+|:-:|:-:|:-:|:-:|:-:|
+|C++ MAYA|C++ MAYA|Python MAYA|Python MAYA|C++ Houdini|
 
 ## Introduction
 This project encompasses the development of a Maya plugin designed to integrate L-Systems, a mathematical modeling language used to simulate the growth processes of plant development and other naturally occurring phenomena. The plugin is developed using a combination of C++ for the backend functionality and Maya Embedded Language (MEL) for the user interface and integration within Maya's ecosystem.
@@ -20,6 +20,9 @@ The core objective of this plugin is to provide Maya users with tools to generat
 |<img src="LSystemMenu.jpg" width="100%">|<img src="LSystemCMD.jpg" width="100%">|<img src="LSystemNode.jpg" width="100%">|
 |:-:|:-:|:-:|
 |Menu|GUI|Node Interface|
+
+## Loading Plugin in Houdini
+![](LSystemHoudini.gif)
 
 ## Loading Plugin in Maya
 ![](LSystemInstance.gif)
